@@ -1,12 +1,6 @@
 # es-shard-cleaner
 Safely delete all indices with unassigned shards in a secure Elasticsearch environment using HTTPS and Basic Auth, without requiring SSL certificates.
 
-Absolutely! Here’s a ready-to-copy, well-formatted README.md content for your GitHub repo:
-
-markdown
-Copy
-Edit
-# es-shard-cleaner
 
 ## 🚨 Problem Statement
 
@@ -15,9 +9,7 @@ Your Elasticsearch cluster shows **red health status** due to many unassigned sh
 org.elasticsearch.action.search.SearchPhaseExecutionException:
 Search rejected due to missing shards [[metrics-endpoint.metadata_current_default][0]]
 
-sql
-Copy
-Edit
+
 
 Cluster stats may show:
 
@@ -48,9 +40,7 @@ Understanding that deleted indices cannot be recovered
 
 🛠️ Usage
 1. Save the script as delete_unassigned_indices.sh
-bash
-Copy
-Edit
+
 #!/bin/bash
 
 # === CONFIGURATION ===
@@ -97,22 +87,18 @@ done
 
 echo "[✓] Done. Check cluster health with:"
 echo "curl -s -k -u $ES_USER:$ES_PASS $ES_HOST/_cluster/health?pretty"
+
 2. Make the script executable:
-bash
-Copy
-Edit
 chmod +x delete_unassigned_indices.sh
+
 3. Run the script:
-bash
-Copy
-Edit
 ./delete_unassigned_indices.sh
+
 4. Confirm deletion by typing yes when prompted.
+
 5. Check cluster health:
-bash
-Copy
-Edit
 curl -s -k -u elastic:123456 https://172.16.202.122:9200/_cluster/health?pretty
+
 ⚠️ Warnings
 The script permanently deletes indices with unassigned shards.
 
