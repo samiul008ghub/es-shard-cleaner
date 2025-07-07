@@ -6,12 +6,13 @@ Safely delete all indices with unassigned shards in a secure Elasticsearch envir
 
 Your Elasticsearch cluster shows **red health status** due to many unassigned shards, causing search failures and degraded performance. You see errors like:
 
+ ```
 org.elasticsearch.action.search.SearchPhaseExecutionException:
 Search rejected due to missing shards [[metrics-endpoint.metadata_current_default][0]]
+``` 
 
 
-
-Cluster stats may show: ```json { "status": "red", "unassigned_shards": 696, "active_shards_percent_as_number": 30.0 } ``` 
+Cluster stats may show: ```{ "status": "red", "unassigned_shards": 696, "active_shards_percent_as_number": 30.0 } ``` 
 
 This means shards are unassigned because of corrupted indices, node failures, or misconfiguration.
 
