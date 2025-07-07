@@ -11,7 +11,7 @@ Search rejected due to missing shards [[metrics-endpoint.metadata_current_defaul
 
 
 
-<pre> Cluster stats may show: ```json { "status": "red", "unassigned_shards": 696, "active_shards_percent_as_number": 30.0 } ``` </pre>
+Cluster stats may show: ```json { "status": "red", "unassigned_shards": 696, "active_shards_percent_as_number": 30.0 } ``` 
 
 This means shards are unassigned because of corrupted indices, node failures, or misconfiguration.
 
