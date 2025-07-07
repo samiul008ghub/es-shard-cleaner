@@ -1,49 +1,65 @@
 # es-shard-cleaner
+
 Safely delete all indices with unassigned shards in a secure Elasticsearch environment using HTTPS and Basic Auth, without requiring SSL certificates.
 
+---
 
-## 🚨 Problem Statement
+## Problem Statement
 
-Your Elasticsearch cluster shows **red health status** due to many unassigned shards, causing search failures and degraded performance. You see errors like:
+Elasticsearch clusters can experience **red health status** due to many unassigned shards, causing search failures and degraded performance. Errors similar to the following may be observed:
 
- ```
+```
 org.elasticsearch.action.search.SearchPhaseExecutionException:
 Search rejected due to missing shards [[metrics-endpoint.metadata_current_default][0]]
-``` 
+```
 
+Cluster statistics may show:
+```json
+{ 
+  "status": "red", 
+  "unassigned_shards": 696, 
+  "active_shards_percent_as_number": 30.0 
+}
+```
 
-Cluster stats may show: ```{ "status": "red", "unassigned_shards": 696, "active_shards_percent_as_number": 30.0 } ``` 
+Unassigned shards may result from corrupted indices, node failures, or misconfiguration.
 
-This means shards are unassigned because of corrupted indices, node failures, or misconfiguration.
+---
 
-🎯 Goal
-Automatically find and delete all Elasticsearch indices with unassigned shards, restoring cluster health — without requiring SSL certificates.
+## Objective
 
-⚙️ How It Works
-Queries Elasticsearch for indices with unassigned shards.
+Automatically identify and delete all Elasticsearch indices with unassigned shards, helping restore cluster health—without requiring SSL certificates.
 
-Lists those indices for your confirmation.
+---
 
-Deletes the listed indices permanently upon confirmation.
+## How It Works
 
-📋 Prerequisites
-Elasticsearch accessible via HTTPS
+- Queries Elasticsearch for indices with unassigned shards.
+- Lists those indices for your review and confirmation.
+- Permanently deletes the listed indices upon confirmation.
 
-Credentials with permissions to delete indices
+---
 
-Bash shell with curl and awk
+## Prerequisites
 
-Understanding that deleted indices cannot be recovered
+- Elasticsearch accessible via HTTPS.
+- Credentials with permissions to delete indices.
+- Bash shell with `curl` and `awk` installed.
+- Awareness that **deleted indices cannot be recovered**.
 
-🛠️ Usage
-1. Save the script as delete_unassigned_indices.sh
+---
 
+## Usage
+
+### 1. Save the script as `delete_unassigned_indices.sh`
+
+```bash
 #!/bin/bash
 
 # === CONFIGURATION ===
-ES_HOST="https://172.16.202.122:9200"     # Your Elasticsearch URL
-ES_USER="elastic"                         # Username with delete access
-ES_PASS="123456"                          # Password
+ES_HOST="https://your-elasticsearch-host:9200"     # Your Elasticsearch URL
+ES_USER="your_username"                            # Username with delete access
+ES_PASS="your_password"                            # Password
 # ======================
 
 # Test connection
@@ -83,26 +99,44 @@ for index in $indices; do
 done
 
 echo "[✓] Done. Check cluster health with:"
-echo "curl -s -k -u $ES_USER:$ES_PASS $ES_HOST/_cluster/health?pretty"
+echo "curl -s -k -u \$ES_USER:\$ES_PASS \$ES_HOST/_cluster/health?pretty"
+```
 
-2. Make the script executable:
+---
+
+### 2. Make the script executable
+
+```bash
 chmod +x delete_unassigned_indices.sh
+```
 
-3. Run the script:
+---
+
+### 3. Run the script
+
+```bash
 ./delete_unassigned_indices.sh
+```
 
-4. Confirm deletion by typing yes when prompted.
+---
 
-5. Check cluster health:
-curl -s -k -u elastic:123456 https://172.16.202.122:9200/_cluster/health?pretty
+### 4. Confirm deletion by typing `yes` when prompted.
 
-⚠️ Warnings
-The script permanently deletes indices with unassigned shards.
+---
 
-Always backup important data before running.
+### 5. Check cluster health
 
-Use carefully in production environments.
+```bash
+curl -s -k -u your_username:your_password https://your-elasticsearch-host:9200/_cluster/health?pretty
+```
 
-Consider Elasticsearch’s Index Lifecycle Management for automated index handling.
+---
 
+## Important Notes
 
+- The script **permanently deletes** indices with unassigned shards.
+- Always back up important data before running.
+- Exercise caution in production environments.
+- Consider Elasticsearch’s [Index Lifecycle Management](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management.html) for automated index handling.
+
+---
